@@ -48,13 +48,19 @@ exports.name = function(cb) {
   if (!is_linux)
     return cb(new Error('Not Linux.'));
 
+  var done = function(err, name) {
+    if (err) return cb(err);
+
+    cb(null, name.toString().replace(' Linux', ''));
+  }
+
   get_distro_info('name', '-i', issue_cbs.name, function(err, name) {
 
     // if it failed, fallback to getos' module strategy.
     if (err || (!name || name == ''))
-      return delayed.getos(cb);
+      return delayed.getos(done);
 
-    cb(err, name);
+    done(err, name);
   });
 };
 
