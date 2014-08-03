@@ -6,7 +6,6 @@ var exec     = require('child_process').exec,
 var is_linux = process.platform === 'linux';
 
 var lsb_release = memorize(function(option, cb) {
-  console.log('execcing.')
   exec('lsb_release ' + option + ' -s', function(err, stdout) {
     if (err) return cb(err);
     cb(null, stdout.toString().trim());

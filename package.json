@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "getos": "^1.0.1",
-    "memorize": "0.0.1",
+    "memorize": "0.0.3",
     "whenever": "0.0.2"
   }
 }
