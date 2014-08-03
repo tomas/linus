@@ -1,0 +1,25 @@
+{
+  "name": "linus",
+  "version": "0.0.1",
+  "description": "Get Linux distro name and version.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "linux",
+    "distro",
+    "name",
+    "info",
+    "version",
+    "issue",
+    "release"
+  ],
+  "author": "Tomas Pollak <tomas@forkhq.com>",
+  "license": "MIT",
+  "dependencies": {
+    "getos": "^1.0.1",
+    "memorize": "0.0.1",
+    "whenever": "0.0.2"
+  }
+}

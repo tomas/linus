@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+var linus   = require('..'),
+    command = process.argv[2];
+    format  = process.argv[3];
+
+var done = function(err, res) {
+  if (err)
+    return console.log(err);
+
+  var obj = format ? JSON.stringify(res, null, 2) : res;
+  console.log(obj);
+}
+
+if (linus[command]) {
+  linus[command](done);
+} else {
+  console.log('Usage: linux [command] [format]');
+  console.log('Where command is one of: ' + Object.keys(linus).join(', '));
+}
