@@ -1,6 +1,6 @@
 {
   "name": "linus",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Get Linux distro name and version.",
   "main": "index.js",
   "scripts": {
