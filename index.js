@@ -1,4 +1,5 @@
-var exec     = require('child_process').exec,
+var readFile = require('fs').readFile,
+    exec     = require('child_process').exec,
     memorize = require('memorize'), 
     later    = require('whenever'),
     delayed  = later('getos');
@@ -12,6 +13,22 @@ var lsb_release = memorize(function(option, cb) {
   });
 })
 
+var detect_chromeos = memorize(function(cb) {
+  readFile('/etc/lsb-release', function(err, data) {
+    if (err) return cb(err);
+
+    if (!data.toString().match('CHROMEOS_RELEASE_VERSION='))
+      return cb(new Error('Not Chrome OS'));
+
+    var nmatch   = data.toString().match(/CHROMEOS_RELEASE_NAME=(.+)/),
+        vermatch = data.toString().match(/CHROMEOS_RELEASE_VERSION=(.+)/),
+        name     = nmatch[1] || 'Chrome OS',
+        version  = vermatch[1];
+
+    cb(null, { name: name, version: version });
+  })
+})
+
 var get_issue = memorize(function(filter_cb, cb) {
   var cmd = 'cat /etc/issue | head -1';
   exec(cmd, function(err, out) {
@@ -21,15 +38,19 @@ var get_issue = memorize(function(filter_cb, cb) {
 })
 
 var get_distro_info = function(what, lsb_param, issue_cb, cb) {
-  lsb_release(lsb_param, function(err, name) {
-    if (name && name != '')
-      return cb(null, name);
+  lsb_release(lsb_param, function(err, res) {
+    if (res && res != '')
+      return cb(null, res);
 
-    get_issue(issue_cb, function(err, name) {
-      if (err || !name)
-        return cb(err || new Error("Couldn't get distro " + what + "."));
+    detect_chromeos(function(err, obj) {
+      if (obj) return cb(null, obj[what]);
 
-      cb(null, name);
+      get_issue(issue_cb, function(err, name) {
+        if (err || !name)
+          return cb(err || new Error("Couldn't get distro " + what + "."));
+
+        cb(null, name);
+      });
     })
   })
 }
