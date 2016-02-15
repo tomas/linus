@@ -1,6 +1,6 @@
 var readFile = require('fs').readFile,
     exec     = require('child_process').exec,
-    memorize = require('memorize'), 
+    memorize = require('memorize'),
     later    = require('whenever'),
     delayed  = later('getos');
 
@@ -57,12 +57,12 @@ var get_distro_info = function(what, lsb_param, issue_cb, cb) {
 
 var issue_cbs = {};
 
-issue_cbs.version = function(out) { 
-  return out.replace(/[^0-9\.]/g, '') 
+issue_cbs.version = function(out) {
+  return out.replace(/[^0-9\.]/g, '');
 };
 
-issue_cbs.name = function(out) { 
-  return out.replace(/\d.*/, '')
+issue_cbs.name = function(out) {
+  return out.replace(/\d.*/, '').replace('release', '');
 };
 
 exports.name = function(cb) {
